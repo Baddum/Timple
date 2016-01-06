@@ -2,11 +2,10 @@
 
 namespace Timple;
 
-use \Aura\Html\HelperLocatorFactory;
+use Aura\Html\HelperLocatorFactory;
 
 class Compiler
 {
-
     protected $templateFile;
 
     public function __construct()
@@ -23,7 +22,7 @@ class Compiler
     public function compile($dataFile, $pageFile)
     {
         $document = $this->getDocument($dataFile);
-        $factory = new HelperLocatorFactory;
+        $factory = new HelperLocatorFactory();
         $escape = $factory->newInstance()->escape();
 
         ob_start();

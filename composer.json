@@ -1,0 +1,10 @@
+{
+    "autoload": {
+        "psr-4": {
+            "Timple\\": "src"
+        }
+    },
+    "require": {
+        "symfony/css-selector": "^3.0"
+    }
+}

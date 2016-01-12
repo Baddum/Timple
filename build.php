@@ -10,20 +10,26 @@ $template = (new TwigTemplate)
 
 $template
     ->query('title')
-    ->content('document.title');
+    ->content('document.title')
+    ->innerCondition('document.title');
 
 $template
     ->query('h1')
-    ->condition('document.title')
-        ->query('span', true)
+    ->outerCondition('document.title')
+        ->query('> span')
         ->content('document.title');
 
 $template
     ->query('h1 + p')
-    ->conditionalContent('document.description', false);
+    ->outerCondition('document.description')
+    ->content('document.description', false);
 
 $template
-    ->query('ul');
+    ->query('ul')
+    ->innerLoop('link in document.links')
+        ->query('> li')
+        ->content('link')
+        ->outerCondition('loop.index < 2');
 
 $template
     ->generateFile(__DIR__ . '/site/templates/page.html.twig');

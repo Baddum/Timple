@@ -7,7 +7,7 @@ class TwigTemplate extends Template
 
     protected function escapeHTML($text, $escape = true)
     {
-        if ($escape) {
+        if (!$escape) {
             return $text . '|raw';
         }
         return $text;
@@ -26,5 +26,15 @@ class TwigTemplate extends Template
     protected function endConditionStatement()
     {
         return '{% endif %}';
+    }
+
+    protected function startLoopStatement($loop)
+    {
+        return '{% for ' . $loop . ' %}';
+    }
+
+    protected function endLoopStatement()
+    {
+        return '{% endfor %}';
     }
 }

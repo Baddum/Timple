@@ -55,19 +55,40 @@ abstract class Template
         return $this;
     }
 
-    public function condition($condition)
+    public function innerCondition($condition)
     {
         $startTemplate = $this->createTemplateNode($this->startConditionStatement($condition));
         $endTemplate = $this->createTemplateNode($this->endConditionStatement());
-        $this->insertWrap($startTemplate, $endTemplate);
+        $this->insertInnerWrap($startTemplate, $endTemplate);
 
         return $this;
     }
 
-    public function conditionalContent($content, $escape = true)
+    public function outerCondition($condition)
     {
-        $this->condition($content);
-        $this->content($content, $escape);
+        $startTemplate = $this->createTemplateNode($this->startConditionStatement($condition));
+        $endTemplate = $this->createTemplateNode($this->endConditionStatement());
+        $this->insertOuterWrap($startTemplate, $endTemplate);
+
+        return $this;
+    }
+
+    public function innerLoop($loop)
+    {
+        $startTemplate = $this->createTemplateNode($this->startLoopStatement($loop));
+        $endTemplate = $this->createTemplateNode($this->endLoopStatement());
+        $this->insertInnerWrap($startTemplate, $endTemplate);
+
+        return $this;
+    }
+
+    public function outerLoop($loop)
+    {
+        $startTemplate = $this->createTemplateNode($this->startLoopStatement($loop));
+        $endTemplate = $this->createTemplateNode($this->endLoopStatement());
+        $this->insertOuterWrap($startTemplate, $endTemplate);
+
+        return $this;
     }
 
     /* TEMPLATE SPECIFIC IMPLEMENTATION METHODS
@@ -89,6 +110,16 @@ abstract class Template
     }
 
     protected function endConditionStatement()
+    {
+        throw new \Exception('Method must be overridden');
+    }
+
+    protected function startLoopStatement($loop)
+    {
+        throw new \Exception('Method must be overridden');
+    }
+
+    protected function endLoopStatement()
     {
         throw new \Exception('Method must be overridden');
     }

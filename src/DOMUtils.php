@@ -38,10 +38,15 @@ trait DOMUtils
         return $this->nodeList[0]->ownerDocument;
     }
 
-    public function query($selector, $rootQuery = false)
+    public function query($selector)
     {
+        $selector = trim($selector);
         $converter = new CssSelectorConverter();
-        $prefix = $rootQuery ? '' : '//';
+        $prefix = '//';
+        if ($selector[0] == '>') {
+            $selector = trim(substr($selector, 1));
+            $prefix = '';
+        }
         $xPath = $converter->toXPath($selector, $prefix);
         $parser = new \DOMXPath($this->getDocument());
         $nodeList = [];
@@ -82,10 +87,27 @@ trait DOMUtils
         }
     }
 
-    protected function insertWrap($beforeNode, $afterNode)
+    protected function appendChild($newNode, $asFirst = false)
+    {
+        foreach ($this->nodeList as $node) {
+            if ($asFirst && $node->firstChild) {
+                $node->insertBefore($newNode->cloneNode(), $node->firstChild);
+            } else {
+                $node->appendChild($newNode->cloneNode());
+            }
+        }
+    }
+
+    protected function insertOuterWrap($beforeNode, $afterNode)
     {
         $this->insertBefore($beforeNode);
         $this->insertAfter($afterNode);
+    }
+
+    protected function insertInnerWrap($beforeNode, $afterNode)
+    {
+        $this->appendChild($beforeNode, true);
+        $this->appendChild($afterNode);
     }
 
 

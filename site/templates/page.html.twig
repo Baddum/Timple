@@ -2,17 +2,16 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<title>{{ document.title|raw }}</title>
+<title>{% if document.title %}{{ document.title }}{% endif %}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="css/normalize.css">
 <link rel="stylesheet" href="css/home.css">
 </head>
 <body>
-    {% if document.title %}<h1><span>{{ document.title|raw }}</span></h1>{% endif %}
-    {% if document.description %}<p>{{ document.description }}</p>{% endif %}
-    <ul>
-<li>Test 1</li>
-        <li>Test 2</li>
-    </ul>
+    {% if document.title %}<h1><span>{{ document.title }}</span></h1>{% endif %}
+    {% if document.description %}<p>{{ document.description|raw }}</p>{% endif %}
+    <ul>{% for link in document.links %}{% if loop.index < 2 %}<li>{{ link }}</li>{% endif %}
+        {% if loop.index < 2 %}<li>{{ link }}</li>{% endif %}
+    {% endfor %}</ul>
 </body>
 </html>
